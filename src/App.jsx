@@ -3,20 +3,33 @@ import './App.css'
 
 function App() {
   const [data, setData] = useState([])
-  const [selectedYear, setSelectedYear] = useState()
+  const [selectedYear, setSelectedYear] = useState(2011)
 
   useEffect(() => {
     let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
 
     async function fetchData() {
       fetch(url)
+        .then((response) => response.json())
+        .then(result => console.log(result.data))
     }
 
     fetchData()
-  }, [])
+  }, [selectedYear])
 
 
-
+  const years = [
+    { year: 2011 },
+    { year: 2012 },
+    { year: 2013 },
+    { year: 2014 },
+    { year: 2015 },
+    { year: 2016 },
+    { year: 2017 },
+    { year: 2018 },
+    { year: 2019 },
+    { year: 2020 }
+  ]
   // useLayoutEffect(() => {
   //   console.log("zehra ecer");
   // }, [])
@@ -26,16 +39,12 @@ function App() {
     <>
       <div>
         <select className='option' name="cars" id="cars" style={{ padding: "10px 70px" }} value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
-          <option className='option' value="2011">2011</option>
-          <option className='option' value="2012">2012</option>
-          <option className='option' value="2013">2013</option>
-          <option className='option' value="2014">2014</option>
-          <option className='option' value="2015">2015</option>
-          <option className='option' value="2016">2016</option>
-          <option className='option' value="2017">2017</option>
-          <option className='option' value="2018">2018</option>
-          <option className='option' value="2019">2019</option>
 
+          {years.map((year, index) => {
+            return (
+              <option key={index} className='option' value={year.year}>{`${year.year}`}</option>
+            )
+          })}
 
         </select>
       </div>
