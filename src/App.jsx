@@ -1,20 +1,27 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import './App.css'
+import { Loading } from './loading';
 
 function App() {
   const [data, setData] = useState([])
   const [selectedYear, setSelectedYear] = useState(2011)
   const inputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
 
     async function fetchData() {
+      setIsLoading(true)
       fetch(url)
         .then((response) => response.json())
         .then(result => setData(result.data))
         .catch((err) => console.error(err.message ?? err))
-        .finally(console.log("is loading"))
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+
     }
 
     fetchData()
@@ -51,26 +58,36 @@ function App() {
   console.log(inputRef);
   return (
     <>
-      <div>
-        <select className='option' name="cars" id="cars" style={{ padding: "10px 70px" }} value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+      <div >  {isLoading ? <Loading /> :
+        <div>
+          <div>
 
-          {years.map((year, index) => {
-            return (
-              <option key={index} className='option' value={year.year}>{`${year.year}`}</option>
-            )
-          })}
+            <select className='option' name="cars" id="cars" style={{ padding: "10px 70px" }} value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
 
-        </select>
+              {years.map((year, index) => {
+                return (
+                  <option key={index} className='option' value={year.year}>{`${year.year}`}</option>
+                )
+              })}
+
+            </select>
+
+          </div>
+          <div>
+
+            <label>Enter your name:
+              <input ref={inputRef}
+
+              />
+            </label>
+          </div>
+
+        </div>
+      }
+
 
       </div>
-      <div>
 
-        <label>Enter your name:
-          <input ref={inputRef}
-
-          />
-        </label>
-      </div>
     </>
   )
 }
