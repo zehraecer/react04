@@ -1,9 +1,10 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import './App.css'
 
 function App() {
   const [data, setData] = useState([])
   const [selectedYear, setSelectedYear] = useState(2011)
+  const inputRef = useRef(null);
 
   useEffect(() => {
     let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
@@ -11,11 +12,23 @@ function App() {
     async function fetchData() {
       fetch(url)
         .then((response) => response.json())
-        .then(result => console.log(result.data))
+        .then(result => setData(result.data))
+        .catch((err) => console.error(err.message ?? err))
+        .finally(console.log("is loading"))
     }
 
     fetchData()
+    inputRef.current.focus()
   }, [selectedYear])
+
+
+  // useEffect(() => {
+  //   let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
+
+  //   const axios = require('axios/dist/node/axios.cjs'); // node
+  // }, [selectedYear])
+
+
 
 
   const years = [
@@ -30,11 +43,12 @@ function App() {
     { year: 2019 },
     { year: 2020 }
   ]
+
   // useLayoutEffect(() => {
   //   console.log("zehra ecer");
   // }, [])
 
-  console.log(selectedYear);
+  console.log(inputRef);
   return (
     <>
       <div>
@@ -47,6 +61,15 @@ function App() {
           })}
 
         </select>
+
+      </div>
+      <div>
+
+        <label>Enter your name:
+          <input ref={inputRef}
+
+          />
+        </label>
       </div>
     </>
   )
