@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import './App.css'
 import { Loading } from './loading';
+import { HackerRankAPI, JsonPlaceHolder } from './api/axios';
 
 function App() {
   const [data, setData] = useState([])
@@ -12,32 +13,32 @@ function App() {
     id: 10
   })
 
-  useEffect(() => {
-    let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
-
-    async function fetchData() {
-      setIsLoading(true)
-      fetch(url)
-        .then((response) => response.json())
-        .then(result => setData(result.data))
-        .catch((err) => console.error(err.message ?? err))
-
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
-
-    }
-
-    fetchData()
-    inputRef.current.focus()
-  }, [selectedYear])
-
-
   // useEffect(() => {
   //   let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
 
-  //   const axios = require('axios/dist/node/axios.cjs'); // node
+  //   async function fetchData() {
+  //     setIsLoading(true)
+  //     fetch(url)
+  //       .then((response) => response.json())
+  //       .then(result => setData(result.data))
+  //       .catch((err) => console.error(err.message ?? err))
+
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 2000);
+
+  //   }
+
+  //   fetchData()
+  //   inputRef.current.focus()
   // }, [selectedYear])
+
+
+  useEffect(() => {
+
+    HackerRankAPI.get(`football_competitions?year=${selectedYear}`).then((result) => console.log(result))
+    JsonPlaceHolder.get(`posts/1`).then(console.log())
+  }, [selectedYear])
 
 
 
