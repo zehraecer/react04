@@ -7,6 +7,10 @@ function App() {
   const [selectedYear, setSelectedYear] = useState(2011)
   const inputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false)
+  const [game, setGame] = useState({
+    status: "existing", // null, active , existing
+    id: 10
+  })
 
   useEffect(() => {
     let url = `https://jsonmock.hackerrank.com/api/football_competitions?year=${selectedYear}`
@@ -73,14 +77,21 @@ function App() {
             </select>
 
           </div>
-          <div>
+          {game.status === "active" && (
+            <div>
 
-            <label>Enter your name:
-              <input ref={inputRef}
+              <input ref={inputRef} placeholder='name' />
+            </div>
 
-              />
-            </label>
-          </div>
+          )}
+
+          {game.status === "existing" && (
+            <div>
+              <input ref={inputRef} placeholder='surName' />
+            </div>
+          )}
+
+
 
         </div>
       }
